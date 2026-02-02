@@ -54,12 +54,29 @@ clawdbot gateway status
 # 2. Kill zombie processes
 pkill -f clawdbot
 
-# 3. Check port conflicts (default: 19000)
-lsof -i :19000
+# 3. Check port conflicts (default: 18789)
+lsof -i :18789
 
 # 4. Reset and restart
 clawdbot gateway stop --force
 clawdbot gateway start
+```
+
+### Issue: RPC probe failed / Gateway connection error
+
+Symptoms: `gateway closed (1006 abnormal closure)`, `Gateway agent failed; falling back to embedded`
+
+```bash
+# 1. Kill all clawdbot processes completely
+pkill -9 -f clawdbot
+
+# 2. Wait and reinstall gateway
+sleep 2 && clawdbot gateway install
+
+# 3. Wait for startup and verify
+sleep 5 && clawdbot gateway status
+
+# Should show: RPC probe: ok
 ```
 
 ### Issue: Telegram/Discord not connecting
@@ -142,7 +159,7 @@ Before starting Clawdbot, verify:
 
 1. **Config exists**: `ls ~/.clawdbot/clawdbot.json`
 2. **No zombie processes**: `pgrep -f clawdbot`
-3. **Port available**: `lsof -i :19000`
+3. **Port available**: `lsof -i :18789`
 4. **Credentials set**: `clawdbot doctor`
 
 ## Emergency Recovery
